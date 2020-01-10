@@ -17,4 +17,21 @@ CHIP DMux4Way {
 
     PARTS:
     // Put your code here:
+    //calculate a value
+    Not(in = sel[0],out =notsel0 );
+    Not(in = sel[1],out = notsel1);
+    And(a = notsel0,b = notsel1,out = asel);
+    And(a = in,b = asel,out = a);
+    
+    //calculate b value
+    And(a = notsel1,b = sel[0],out = bsel);
+    And(a = in,b = bsel,out = b);
+
+    //calculate c value
+    And(a = sel[1],b = notsel0,out = csel);
+    And(a = in,b = csel,out = c);
+
+   //calculate d value
+    And(a = sel[0],b = sel[1],out = dsel);
+    And(a = in,b = dsel,out = d);
 }

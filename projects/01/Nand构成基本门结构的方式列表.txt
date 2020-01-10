@@ -1,0 +1,5 @@
+Not(a) = Nand(a,a);
+And(a,b)=Nand(Nand(a,b),Nand(a,b));
+Or(a,b)=Nand(Nand(a,a),Nand(b,b));
+Xor(a,b)=Or(And(a,Not(b),And(b,Not(a))));
+Mux(a,b,sel) = Or(And(a,Not(sel)),And(b,sel));
