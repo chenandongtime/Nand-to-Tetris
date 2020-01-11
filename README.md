@@ -12,3 +12,6 @@ bug1:
 bug2:
 CHIP中的类似数组的变量从测试脚本中读取数据信息的时候是反向的，set[] = 10 ,set[1]==0,set[0]==1.
 
+![image-20200111113610978](C:\Users\AnDong\AppData\Roaming\Typora\typora-user-images\image-20200111113610978.png)
+
+![image-20200111113620950](C:\Users\AnDong\AppData\Roaming\Typora\typora-user-images\image-20200111113620950.png)
