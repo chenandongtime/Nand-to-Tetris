@@ -10,8 +10,12 @@ bug1:
 仿真器就会调用内建的CHIP,在BuiltIn文件夹内，这个时候仿真的运行就没有问题。
 
 bug2:
-CHIP中的类似数组的变量从测试脚本中读取数据信息的时候是反向的，set[] = 10 ,set[1]==0,set[0]==1.
+CHIP中的类似数组的变量从测试脚本中读取数据信息的时候是反向的，set[] = 10 ,set[1]==1,set[0]==0.
 
-![image-20200111113610978](C:\Users\AnDong\AppData\Roaming\Typora\typora-user-images\image-20200111113610978.png)
+即set[0]是最右边的数据，set[maxNum]是最左边的数据。
 
-![image-20200111113620950](C:\Users\AnDong\AppData\Roaming\Typora\typora-user-images\image-20200111113620950.png)
+bug3:CHIP输出变量的顺序不能改变。
+
+bug4:中文分号会有空格，英文分号没有，但是两个分号长得一样。
+
+bug5:对于in[num],这种取值的方法只能用在输入输出变量上，不能用在中间变量上。
