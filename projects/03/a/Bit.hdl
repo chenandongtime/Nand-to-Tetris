@@ -15,4 +15,7 @@ CHIP Bit {
 
     PARTS:
     // Put your code here:
+    Mux(a=preOut,b=in,sel=load,out = out0);//preout怎么初始化
+    DFF(in = out0,out = preOut,out = out);
+    
 }
