@@ -40,4 +40,53 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+
+    // if it is A instruction,load ARegister with instruction else  judge C instruction whether need load ALUOut to ARegister
+    Not(in = instruction[15],out = Ains);
+    Mux16(a = outALU, b = instruction, sel = Ains, out = inAR);
+    Or(a = Ains,b=instruction[5],out = loadAR); 
+    ARegister(in = inAR,load = loadAR ,out = AR ,out[0..14] = addressM);
+    
+    //if it is C instruction
+    Not(in = Ains,out = Cins);
+
+   // 如果是C指令并且规定写入到M
+   And(a = Cins, b = instruction[3], out = writeM);
+
+   // decide use inM or A value
+   Mux16(a = AR,b = inM,sel = instruction[12],out = AM);
+
+     //calculate ALU 
+    And(a = instruction[4], b = Cins, out = isLoadDR);
+    DRegister(in = outALU,load = isLoadDR,out = DR);
+
+    // ALU(x = DR,y=AM,zx = instruction[11],nx = instruction[10],zy=instruction[9],ny = instruction[8],f = instruction[7],no=instruction[6],out = outALU,zr = zr,ng=ng)
+    And(a = Cins, b = instruction[6], out = no);
+    And(a = Cins, b = instruction[7], out = f);
+    And(a = Cins, b = instruction[8], out = ny);
+    And(a = Cins, b = instruction[9], out = zy);
+    And(a = Cins, b = instruction[10], out = nx);
+    And(a = Cins, b = instruction[11], out = zx);
+
+    ALU(x = DR, y = AM, zx = zx, nx = nx, zy = zy, ny = ny, f = f, no = no, out = outALU, out = outM, zr=zr, ng=ng);
+   
+   // 根据j位域和ALU的zr、ng位来判断跳转
+    And(a = Cins, b = instruction[0], out = isGT);
+    And(a = Cins, b = instruction[1], out = isEQ);
+    And(a = Cins, b = instruction[2], out = isLT);
+
+    And(a = ng, b = isLT, out = isLtJump);
+    And(a = zr, b = isEQ, out = isEqJump);
+
+    // 输出是否大于0
+    Not(in = ng, out = notNg);
+    Not(in = zr, out = notZr);
+    And(a = notNg, b = notZr, out = isOutGt);
+    
+    And(a = isOutGt, b = isGT, out = isGtJump);
+
+    Or(a = isLtJump, b = isEqJump, out = isJump);
+    Or(a = isJump, b = isGtJump, out = jump);
+
+    PC(in = AR, load = jump, inc = true, reset = reset, out[0..14] = pc);
 }
